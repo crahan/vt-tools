@@ -1,4 +1,4 @@
-# vt-tools
+# VT Tools
 VirusTotal Python tools
 
 ## vt-query.py
