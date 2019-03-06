@@ -142,7 +142,6 @@ def validate_hash(h):
 
 def output_reports(reports, filename=None):
     """Print reports to stdout or save to filename"""
-    
     if filename is None:
         for report in reports:
             print(report)
