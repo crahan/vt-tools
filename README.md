@@ -1,7 +1,7 @@
 # VT Tools
 VirusTotal Python tools
 
-## vt-query.py
+## vt-report.py
 
 ```
 $ python vt-report.py --help
