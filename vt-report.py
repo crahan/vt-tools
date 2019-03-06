@@ -172,7 +172,7 @@ def countdown(t, label):
 def main():
     parser = argparse.ArgumentParser(description='VirusTotal report query based on one or more hash values.')
     parser.add_argument(dest='hashes', action='store', nargs='*',
-                        help='hash values (MD5, SHA1, SHA256')               
+                        help='hash values (MD5, SHA1, SHA256)')               
     parser.add_argument('--input', dest="finput", action='store',
                         help='input file containing hash values')
     parser.add_argument('--output', dest="foutput", action='store',

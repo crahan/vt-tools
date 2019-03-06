@@ -11,7 +11,7 @@ usage: vt-report.py [-h] [--input FINPUT] [--output FOUTPUT]
 VirusTotal report query based on one or more hash values.
 
 positional arguments:
-  hashes            hash values (MD5, SHA1, SHA256
+  hashes            hash values (MD5, SHA1, SHA256)
 
 optional arguments:
   -h, --help        show this help message and exit
