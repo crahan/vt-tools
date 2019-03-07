@@ -4,6 +4,13 @@ VirusTotal Python tools
 ## vt-report.py
 Query [VirusTotal](http://virustotal.com) for reports based on one or more hashes, either piped in from another command, as a set of hash values provided on the commandline, or by specifying a file containing hashes using the `--input <filename>` parameter. Output goes to stdout by default unless an output file is specified using `--output <filename>`. 
 
+To configure create `~/.yamjam/config.yaml` containing the following settings:
+
+```
+vt-tools:
+    apikey: VT_API_key
+```
+
 **Note**: As free VirusTotal accounts have a 4 query per minute limitation queries are separated by a 16-second delay.
 
 ```
