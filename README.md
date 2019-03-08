@@ -1,7 +1,5 @@
 # VT Tools
-VirusTotal Python tools
-
-To use, first create `~/.yamjam/config.yaml` containing the following settings:
+VirusTotal Python tools. To use, create `~/.yamjam/config.yaml` containing the following settings:
 
 ```
 vt-tools:
