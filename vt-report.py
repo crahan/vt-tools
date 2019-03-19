@@ -180,7 +180,7 @@ def main():
 
     # Try to load the VT API key via YamJam
     try:
-        apikey = yamjam()['vt-tools']['apikey']
+        apikey = yamjam()['api-credentials']['vt-tools']['key']
     except (YAMLError, KeyError):
         sys.exit("Could not load vt-tools API key. Exiting.")
 
