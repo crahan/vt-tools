@@ -2,8 +2,9 @@
 VirusTotal Python tools. To use, create `~/.yamjam/config.yaml` containing the following settings:
 
 ```
-vt-tools:
-    apikey: VT_API_key
+api-credentials
+  vt-tools:
+    key: VT_API_key
 ```
 
 ## vt-report.py
