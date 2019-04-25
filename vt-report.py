@@ -15,8 +15,16 @@ class VTReport:
     """VirusTotal report object"""
 
     _VT_API_REPORT_URL = 'https://www.virustotal.com/vtapi/v2/file/report'
-    _FIELDS = ['resource', 'positives', 'total', 'scan_date', 'md5', 'sha1', 'sha256', 'permalink']
-
+    _FIELDS = [
+        'resource',
+        'positives',
+        'total',
+        'scan_date',
+        'md5',
+        'sha1',
+        'sha256',
+        'permalink'
+    ]
 
     def __init__(self, apikey, resource):
         self._apikey = apikey
@@ -25,8 +33,14 @@ class VTReport:
 
     def update(self):
         """Execute HTTP request and save response"""
-        params = {'apikey': self._apikey, 'resource': self._resource}
-        self._response = requests.get(self._VT_API_REPORT_URL, params=params)
+        params = {
+            'apikey': self._apikey,
+            'resource': self._resource
+        }
+        self._response = requests.get(
+            self._VT_API_REPORT_URL,
+            params=params
+        )
 
     @property
     def http_status_code(self):
@@ -56,7 +70,7 @@ class VTReport:
 
     def __repr__(self):
         return "VTReport()"
-    
+
     def __str__(self):
         str_ = ""
         json = self._response.json()
@@ -64,9 +78,16 @@ class VTReport:
         standardfmt = "{key}: {value}" + os.linesep
         for field in self._FIELDS:
             if field is 'positives':
-                str_ += detectionfmt.format(key=field, positives=json['positives'], total=json['total'])
+                str_ += detectionfmt.format(
+                    key=field,
+                    positives=json['positives'],
+                    total=json['total']
+                )
             elif field is not 'total':
-                str_ += standardfmt.format(key=field, value=json[field])
+                str_ += standardfmt.format(
+                    key=field,
+                    value=json[field]
+                )
         return str_
 
 
@@ -76,7 +97,7 @@ def get_reports(hashes, apikey):
 
     for idx, h in enumerate(hashes):
         print("{}/{} - {}".format(idx+1, len(hashes), h), end="", flush=True)
-        
+
         # Skip the request if the hash is invalid
         if not validate_hash(h):
             print(" (Invalid hash, skipping)")
@@ -91,7 +112,10 @@ def get_reports(hashes, apikey):
             else:
                 print(" ({})".format(report.json['verbose_msg']))
         else:
-            print(" ({}: {})".format(report.http_status_code, report.http_reason))
+            print(" ({}: {})".format(
+                report.http_status_code,
+                report.http_reason
+            ))
 
         # 16-second delay
         if idx < len(hashes)-1:
@@ -112,7 +136,7 @@ def read_hash_from_file(fname):
                 file_hashes = f.read().splitlines()
     except IOError as e:
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
-    
+
     return file_hashes
 
 
@@ -123,7 +147,7 @@ def read_hash_from_stdin():
     if not sys.stdin.isatty():
         for line in sys.stdin.readlines():
             piped_hashes.append(line.strip())
-    
+
     return piped_hashes
 
 
@@ -146,14 +170,23 @@ def output_reports(reports, filename=None):
         for report in reports:
             print(report)
     else:
-        headers = ['resource', 'positives', 'total', 'scan_date', 'md5', 'sha1', 'sha256', 'permalink']
+        headers = [
+            'resource',
+            'positives',
+            'total',
+            'scan_date',
+            'md5',
+            'sha1',
+            'sha256',
+            'permalink'
+        ]
         f = open(filename, "w")
         writer = csv.writer(f)
         writer.writerow(headers)
         for report in reports:
             row = []
             for header in headers:
-                row.append(report.json[header]) 
+                row.append(report.json[header])
             writer.writerow(row)
         f.close()
 
@@ -169,13 +202,27 @@ def countdown(t, label):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='VirusTotal report query based on one or more hash values.')
-    parser.add_argument(dest='hashes', action='store', nargs='*',
-                        help='hash values (MD5, SHA1, SHA256)')               
-    parser.add_argument('--input', dest="finput", action='store',
-                        help='input file containing hash values')
-    parser.add_argument('--output', dest="foutput", action='store',
-                        help='output file')
+    parser = argparse.ArgumentParser(
+        description='VirusTotal report query based on one or more hash values.'
+    )
+    parser.add_argument(
+        dest='hashes',
+        action='store',
+        nargs='*',
+        help='hash values (MD5, SHA1, SHA256)'
+    )
+    parser.add_argument(
+        '--input',
+        dest="finput",
+        action='store',
+        help='input file containing hash values'
+    )
+    parser.add_argument(
+        '--output',
+        dest="foutput",
+        action='store',
+        help='output file'
+    )
     args = parser.parse_args()
 
     # Try to load the VT API key via YamJam
@@ -197,7 +244,6 @@ def main():
         output_reports(reports, args.foutput)
     else:
         print('No hash values provided')
-
 
 if __name__ == '__main__':
     main()
