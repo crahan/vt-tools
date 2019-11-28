@@ -77,13 +77,13 @@ class VTReport:
         detectionfmt = "{key}: {positives}/{total}" + os.linesep
         standardfmt = "{key}: {value}" + os.linesep
         for field in self._FIELDS:
-            if field is 'positives':
+            if field == 'positives':
                 str_ += detectionfmt.format(
                     key=field,
                     positives=json['positives'],
                     total=json['total']
                 )
-            elif field is not 'total':
+            elif field != 'total':
                 str_ += standardfmt.format(
                     key=field,
                     value=json[field]
