@@ -5,10 +5,8 @@ import re
 import sys
 import time
 import requests
-import argparse
-import json
 import csv
-from YamJam import yamjam, YAMLError
+import click
 
 
 class VTReport:
@@ -91,12 +89,13 @@ class VTReport:
         return str_
 
 
-def get_reports(hashes, apikey):
+def get_reports(hashes, apikey, fast):
     """Retrieve VT data for a list of hashes"""
     reports = []
+    delay = 1 if fast else 16
 
     for idx, h in enumerate(hashes):
-        print("{}/{} - {}".format(idx+1, len(hashes), h), end="", flush=True)
+        print("{}/{} - {}".format(idx + 1, len(hashes), h), end="", flush=True)
 
         # Skip the request if the hash is invalid
         if not validate_hash(h):
@@ -117,9 +116,9 @@ def get_reports(hashes, apikey):
                 report.http_reason
             ))
 
-        # 16-second delay
-        if idx < len(hashes)-1:
-            countdown(16, 'Sleeping: ')
+        # Sleep
+        if idx < len(hashes) - 1:
+            countdown(delay, 'Sleeping: ')
         else:
             print('')
 
@@ -201,49 +200,31 @@ def countdown(t, label):
         t -= 1
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='VirusTotal report query based on one or more hash values.'
-    )
-    parser.add_argument(
-        dest='hashes',
-        action='store',
-        nargs='*',
-        help='hash values (MD5, SHA1, SHA256)'
-    )
-    parser.add_argument(
-        '--input',
-        dest="finput",
-        action='store',
-        help='input file containing hash values'
-    )
-    parser.add_argument(
-        '--output',
-        dest="foutput",
-        action='store',
-        help='output file'
-    )
-    args = parser.parse_args()
-
-    # Try to load the VT API key via YamJam
-    try:
-        apikey = yamjam()['api-credentials']['vt-tools']['key']
-    except (YAMLError, KeyError):
-        sys.exit("Could not load vt-tools API key. Exiting.")
+@click.command()
+@click.argument('hashes', nargs=-1)
+@click.option('--infile', help='Input file containing hash values.')
+@click.option('--outfile', default='output.csv', help='CSV output filename, default outfile.csv.')
+@click.option('--apikey', envvar='VTAPIKEY', help='VirusTotal API key, default VTAPIKEY env var.')
+@click.option('--fast', is_flag=True, help='Disable request throttling.')
+def app(hashes, infile, outfile, apikey, fast):
+    """Retrieve VirusTotal analysis information for a set of hash values."""
+    if not apikey:
+        raise Exception('Error: no VirusTotal API key provided.')
 
     # Build hash list and remove empty strings and duplicates
-    hashlist = args.hashes
+    hashlist = list(hashes)
     hashlist.extend(read_hash_from_stdin())
-    hashlist.extend(read_hash_from_file(args.finput))
+    hashlist.extend(read_hash_from_file(infile))
     hashlist = list(filter(None, hashlist))
     hashlist = list(dict.fromkeys(hashlist))
 
-    # Get reports
+    # Get VirusTotal reports
     if len(hashlist) > 0:
-        reports = get_reports(hashlist, apikey)
-        output_reports(reports, args.foutput)
+        reports = get_reports(hashlist, apikey, fast)
+        output_reports(reports, outfile)
     else:
-        print('No hash values provided')
+        print('No hash values provided.')
+
 
 if __name__ == '__main__':
-    main()
+    app()

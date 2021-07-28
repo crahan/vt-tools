@@ -37,6 +37,6 @@ setup(
         'Intended Audience :: Developers',
     ],
     install_requires=[
-        'yamjam',
+        'click',
     ],
 )
