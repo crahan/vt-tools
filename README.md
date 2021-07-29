@@ -12,7 +12,7 @@ Usage: vt-report.py [OPTIONS] [HASHES]...
 
 Options:
   --infile TEXT   Input file containing hash values.
-  --outfile TEXT  CSV output filename, default outfile.csv.
+  --outfile TEXT  CSV output filename, default print to stdout.
   --apikey TEXT   VirusTotal API key, default VTAPIKEY env var.
   --fast          Disable request throttling.
   --help          Show this message and exit.
