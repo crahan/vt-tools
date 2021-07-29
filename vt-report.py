@@ -203,7 +203,7 @@ def countdown(t, label):
 @click.command()
 @click.argument('hashes', nargs=-1)
 @click.option('--infile', help='Input file containing hash values.')
-@click.option('--outfile', default='output.csv', help='CSV output filename, default outfile.csv.')
+@click.option('--outfile', help='CSV output filename, default print to stdout.')
 @click.option('--apikey', envvar='VTAPIKEY', help='VirusTotal API key, default VTAPIKEY env var.')
 @click.option('--fast', is_flag=True, help='Disable request throttling.')
 def app(hashes, infile, outfile, apikey, fast):
