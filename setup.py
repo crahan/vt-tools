@@ -11,32 +11,33 @@ def read(fname):
 def find_scripts():
     """Find Python script files."""
     scripts = []
-    exclude = ['setup.py']
-    for file in os.scandir('.'):
-        if file.name.endswith('.py') and file.is_file() and (file.name not in exclude):
+    exclude = ["setup.py"]
+    for file in os.scandir("."):
+        if file.name.endswith(".py") and file.is_file() and (file.name not in exclude):
             scripts.append(file.name)
     return scripts
 
 
 setup(
-    name='vt-tools',
-    version='0.1.0',
+    name="vt-tools",
+    version="0.1.1",
     author="Thomas Bouve (@crahan)",
     author_email="crahan@n00.be",
-    description='VirusTotal Python scripts.',
-    long_description=read('README.md'),
+    description="VirusTotal Python scripts.",
+    long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    license='MIT',
+    license="MIT",
     packages=find_packages(),
     scripts=find_scripts(),
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
     ],
     install_requires=[
-        'click',
+        "click",
+        "requests",
     ],
 )
