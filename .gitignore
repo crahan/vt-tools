@@ -106,5 +106,5 @@ ENV/
 # VSCode workspace settings
 .vscode
 
-#macOS
+# macOS
 .DS_Store
